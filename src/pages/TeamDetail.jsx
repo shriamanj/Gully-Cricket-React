@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { calculateMatches } from "../utils/utils";
 import { v4 } from "uuid";
 import RadioButton from "../components/RadioButton";
-import { teamDetail } from "../constants";
+import { teamDetail } from "../constants/index";
 
 const Team = ({ index, teamInfo, teamsInfo, setTeamsInfo }) => {
   const handleTeamName = (event) => {
