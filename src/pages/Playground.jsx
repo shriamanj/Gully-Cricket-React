@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PlayMatch from "../components/match";
+import PlayMatch from "../components/PlayMatch";
 
 const Match = ({ match, matches, openMatch, currMatch }) => {
   return (
