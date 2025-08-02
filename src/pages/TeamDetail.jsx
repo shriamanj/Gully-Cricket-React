@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from "react-router";
 import Input from "../components/Input";
 import { useEffect, useState } from "react";
-import { teamInfo } from "../constants";
 import { calculateMatches } from "../utils/utils";
 import { v4 } from "uuid";
 import RadioButton from "../components/RadioButton";
+import { teamDetail } from "../constants";
 
 const Team = ({ index, teamInfo, teamsInfo, setTeamsInfo }) => {
   const handleTeamName = (event) => {
@@ -124,7 +124,7 @@ const TeamsDetail = () => {
     const teams = [];
     if (location?.state?.teams) {
       for (let i = 0; i < location.state.teams; i++) {
-        teams.push(structuredClone({ ...teamInfo, teamId: v4() }));
+        teams.push(structuredClone({ ...teamDetail, teamId: v4() }));
         setTeamsInfo([...teams]);
       }
     }

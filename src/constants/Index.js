@@ -1,4 +1,4 @@
-export const teamInfo = {
+export const teamDetail = {
   teamId: "",
   teamName: "",
   players: [
