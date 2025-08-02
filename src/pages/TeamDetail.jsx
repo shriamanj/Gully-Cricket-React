@@ -4,7 +4,46 @@ import { useEffect, useState } from "react";
 import { calculateMatches } from "../utils/utils";
 import { v4 } from "uuid";
 import RadioButton from "../components/RadioButton";
-import { teamDetail } from "../constants/index";
+
+const teamDetail = {
+  teamId: "",
+  teamName: "",
+  players: [
+    {
+      id:'p1',
+      name: "",
+      type: "",
+      runs: 0,
+      balls: 0,
+      wickets: 0,
+    },
+    {
+      id:'p2',
+      name: "",
+      type: "",
+      runs: 0,
+      balls: 0,
+      wickets: 0,
+    },
+    {
+      id:'p3',
+      name: "",
+      type: "",
+      runs: 0,
+      balls: 0,
+      wickets: 0,
+    },
+  ],
+  balls: 6,
+  wickets: 0,
+  score: 0,
+  currScore: 0,
+  chance: true,
+  winner: false,
+  matches: 0,
+  wins: 0,
+  loss: 0,
+};
 
 const Team = ({ index, teamInfo, teamsInfo, setTeamsInfo }) => {
   const handleTeamName = (event) => {
