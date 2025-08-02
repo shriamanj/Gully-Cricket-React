@@ -1,10 +1,9 @@
 import { Route, Routes } from "react-router";
 import Mode from "./pages/Mode";
-import Navbar from "./pages/navbar";
 import TeamDetail from "./pages/TeamDetail";
-import Match from "./components/match";
 import PointsTable from "./pages/PointsTable";
 import Playground from "./pages/Playground";
+import Navbar from "./pages/Navbar";
 
 function App() {
   return (
