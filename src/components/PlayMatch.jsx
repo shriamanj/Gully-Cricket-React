@@ -34,7 +34,7 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
       return;
     }
 
-    const team = player.name === teamA.name ? teamB : teamA
+    const team = player.name === teamA.name ? teamB : teamA;
     const batsmanRef = player.name === teamA.name ? batsmanRef1 : batsmanRef2;
     let bowlerInx = team.players.findIndex((item) => item.type === "bowler");
     let batsmanInx = player.players.findIndex(
@@ -150,7 +150,9 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
       } else if (teamA.score < teamB.score) {
         winTeamB();
       } else {
-        if (teamA.score > 0 && teamB.score > 0) matchDraw();
+        if (teamA.score > 0 && teamB.score > 0) {
+          matchDraw();
+        }
       }
     }
     if (teamA.wickets === 2 || teamB.wickets === 2) {
@@ -170,6 +172,9 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
         score: matchInfo.teamA.score,
         wickets: matchInfo.teamA.wickets,
         players: matchInfo.teamA.players,
+        balls:6,
+        currScore: 0,
+        chance: true,
       });
     }
     if (matchInfo && matchInfo.teamB) {
@@ -179,6 +184,9 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
         score: matchInfo.teamB.score,
         wickets: matchInfo.teamB.wickets,
         players: matchInfo.teamB.players,
+        balls:6,
+        currScore: 0,
+        chance: false,
       });
     }
   }, [matchInfo]);

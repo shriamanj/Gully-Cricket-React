@@ -49,7 +49,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
         <p className="text-xl sm:text-[30px] font-bold text-gray-900">
           {player.score}/{player.wickets}{" "}
           <span className="text-sm sm:text-base font-semibold">
-            ({player.balls} balls)
+            ({6 - player.balls} balls)
           </span>
         </p>
       </div>

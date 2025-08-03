@@ -1,11 +1,12 @@
 import { Link } from "react-router";
 import logo from "../assets/3a-logo.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Navbar = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstall, setShowInstall] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef();
 
   useEffect(() => {
     const handler = (e) => {
@@ -16,6 +17,17 @@ const Navbar = () => {
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
+
+  useEffect(() => {
+    if (!showMenu) return;
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showMenu]);
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -78,7 +90,7 @@ const Navbar = () => {
         </div>
       </div>
       {showMenu && (
-        <div className="z-10 border-b-2 flex flex-col justify-end sm:hidden absolute text-right top-16 font-semibold bg-white px-4 py-4 w-full space-y-2">
+        <div  ref={menuRef} className="z-10 border-b-2 flex flex-col justify-end sm:hidden absolute text-right top-16 font-semibold bg-white px-4 py-4 w-full space-y-2">
           <Link
             to="/playground"
             className="block text-gray-700 hover:text-blue-500"
