@@ -184,10 +184,10 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
   }, [matchInfo]);
 
   return (
-    <div className="relative flex items-center justify-center w-[600px] h-[600px] bg-gradient-to-br from-green-500 via-green-300 to-green-600 rounded-full shadow-2xl animate-fade-in">
-      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70px] h-[40%] bg-gradient-to-b from-yellow-200 to-yellow-300 rounded-xl shadow-lg z-0"></div>
-      <div className="relative z-10 flex w-full h-full items-center justify-between px-8">
-        <div className="w-full flex justify-end">
+    <div className="relative flex justify-center items-center w-[340px] sm:w-[600px] h-[420px] sm:h-[600px] bg-gradient-to-br from-green-500 via-green-300 to-green-600 rounded-[140px] sm:rounded-full shadow-2xl animate-fade-in">
+      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[40px]  sm:w-[70px] h-[35%] sm:h-[40%] bg-gradient-to-b from-yellow-200 to-yellow-300 rounded-md sm:rounded-xl shadow-lg z-0"></div>
+      <div className="relative z-10 flex sm:w-full h-full items-center justify-between px-0 sm:px-8">
+        <div className="w-full flex justify-center items-center">
           <PlayerCard
             batsmanRef={batsmanRef1}
             player={teamA}
@@ -196,7 +196,7 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
             handleHit={handleClick}
           />
         </div>
-        <div className="w-full flex justify-start">
+        <div className="w-full flex justify-center items-center">
           <PlayerCard
             batsmanRef={batsmanRef2}
             player={teamB}

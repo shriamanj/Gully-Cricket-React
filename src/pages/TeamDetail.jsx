@@ -65,7 +65,7 @@ const Team = ({ index, teamInfo, teamsInfo, setTeamsInfo }) => {
   };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 shadow-md mb-8 px-4 py-6 border border-gray-300 bg-white rounded-xl animate-fade-in">
+    <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8 shadow-md mb-4 sm:mb-8 px-4 py-6 border border-gray-300 bg-white rounded-xl animate-fade-in">
       <Input
         type="text"
         id="teamName"
@@ -171,9 +171,9 @@ const TeamsDetail = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="w-full p-8">
-        <div className="flex justify-between items-center border-b-2 mb-6">
-          <h2 className="text-2xl font-semibold text-center text-gray-800">
+      <div className="w-full p-3 sm:p-8">
+        <div className="flex justify-between items-center border-b-2 mb-3 sm:mb-6">
+          <h2 className="text-lg sm:text-2xl font-semibold text-center text-gray-800">
             Team Details
           </h2>
           {location?.state?.teams === 2 && (
@@ -201,7 +201,7 @@ const TeamsDetail = () => {
           );
         })}
 
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-4 sm:mt-8 mb-4 sm:mb-8">
           <button
             onClick={() => createTeams()}
             className="bg-gray-800 text-white font-bold py-3 px-8 rounded-xl shadow hover:bg-gray-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200"

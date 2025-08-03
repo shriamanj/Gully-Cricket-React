@@ -2,11 +2,11 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
   let batsman = player.players.filter((player) => player.type === "batsman");
 
   return (
-    <div className="relative w-64 h-96 p-8 flex flex-col items-center bg-transparent">
+    <div className="relative w-[170px] sm:w-64 h-96 sm:p-8 flex flex-col items-center justify-center bg-transparent -mt-10">
       <div className="w-full flex flex-col items-center">
         <div className="flex items-center gap-4 mb-4">
           <h1
-            className={`flex gap-2 font-semibold text-[28px] uppercase text-gray-900`}
+            className={`flex gap-2 font-semibold text-xl sm:text-[28px] text-gray-900`}
           >
             {player.chance ? (
               <svg
@@ -16,7 +16,8 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
                 xmlnsXlink="http://www.w3.org/1999/xlink"
                 x="0px"
                 y="0px"
-                width={28}
+                // width={28}
+                className="w-6 sm:w-7"
                 viewBox="0 0 122.25 122.88"
                 xmlSpace="preserve"
               >
@@ -32,7 +33,8 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
                 xmlnsXlink="http://www.w3.org/1999/xlink"
                 x="0px"
                 y="0px"
-                width={28}
+                // width={28}
+                className="w-5 sm:w-7"
                 viewBox="0 0 122.88 122.88"
                 xmlSpace="preserve"
               >
@@ -44,9 +46,9 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             {player.name}
           </h1>
         </div>
-        <p className="text-[30px] font-bold text-gray-900">
+        <p className="text-xl sm:text-[30px] font-bold text-gray-900">
           {player.score}/{player.wickets}{" "}
-          <span className="text-base font-semibold">
+          <span className="text-sm sm:text-base font-semibold">
             ({player.balls} balls)
           </span>
         </p>
@@ -57,7 +59,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             <p
               ref={batsmanRef}
               id={batsman[player.wickets]?.id}
-              className="flex justify-between w-[132px] font-semibold"
+              className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[132px] font-semibold"
             >
               <span>{batsman[player.wickets]?.name}</span>
               <span>
@@ -67,7 +69,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             </p>
             <p
               id={"bowler"}
-              className="flex justify-between w-[132px] font-semibold mt-1"
+              className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[132px] font-semibold mt-1"
             >
               <span>{bowler[0]?.name}</span>
               <span>
@@ -75,18 +77,18 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
               </span>
             </p>
           </div>
-          <div className="mt-10 flex justify-center">
-            <p className="font-bold px-2 text-4xl text-center text-gray-900">
+          <div className="mt-6 sm:mt-10 flex justify-center">
+            <p className="font-bold px-2 text-2xl sm:text-4xl text-center text-gray-900">
               {player.currScore == 0 && player.balls === 6
                 ? "--"
                 : player.currScore}
             </p>
           </div>
-          <div className="mt-10 h-10 flex justify-center">
+          <div className="mt-6 sm:mt-10 h-10 flex justify-center">
             {player.balls > 0 ? (
               <button
                 disabled={!player.chance}
-                className="bg-green-600 text-white font-bold rounded px-10 py-1.5 text-xl cursor-pointer disabled:opacity-50 disabled:bg-gray-400 shadow-lg"
+                className="bg-green-600 text-white font-bold rounded px-6 sm:px-10 py-1 sm:py-1.5 text-base sm:text-xl cursor-pointer disabled:opacity-50 disabled:bg-gray-400 shadow-lg"
                 onClick={() => handleHit(player)}
               >
                 HIT
@@ -102,12 +104,12 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
         </>
       ) : (
         <>
-          <div className="flex flex-col items-center text-gray-700 mt-8">
+          <div className="flex flex-col items-center text-gray-700 mt-6">
             <div className="flex flex-col">
               {batsman.map((bts, index) => (
                 <p
                   key={index}
-                  className="flex justify-between w-[132px] font-semibold"
+                  className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[132px] font-semibold"
                 >
                   <span>{bts.name}</span>
                   <span>
@@ -119,8 +121,8 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             {bowler.map((bts, index) => (
               <p
                 key={index}
-                className="flex justify-between w-[132px] font-semibold mt-5"
-              >
+               className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[132px] font-semibold mt-3"
+            >
                 <span>{bts.name}</span>
                 <span>
                   {bts.wickets}/({bts.balls})
@@ -130,8 +132,8 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
           </div>
           {result?.split(" ")[0] === player.name && (
             <div
-              className={`absolute bottom-0 text-xl font-bold mt-6 text-center text-[#eeeeee] ${
-                player.id === 1 ? "w-full left-[50%]" : "-left-[40%]"
+              className={`absolute bottom-10 text-xl font-bold mt-6 text-center text-[#eeeeee] ${
+                player.id === 1 ? "w-full left-[50%]" : "-left-1/2 sm:-left-[40%]"
               }`}
             >
               {result}
