@@ -37,6 +37,7 @@ const Match = ({ match, matches, openMatch, currMatch }) => {
     </div>
   );
 };
+
 const Playground = () => {
   const [matches, setMatches] = useState([]);
   const [currMatch, setCurrMatch] = useState(null);
@@ -50,7 +51,7 @@ const Playground = () => {
     const matches = JSON.parse(localStorage.getItem("matches")) || [];
     const index = matches.findIndex((item) => item.result === "");
     setMatches(matches.sort((a, b) => a.matchNo - b.matchNo));
-    setCurrMatch(matches[index]);
+    setCurrMatch({...matches[index]});
   }, []);
 
   return (

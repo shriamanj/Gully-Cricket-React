@@ -4,45 +4,44 @@ import { useEffect, useState } from "react";
 import { calculateMatches } from "../utils/utils";
 import { v4 } from "uuid";
 import RadioButton from "../components/RadioButton";
+import { teamsSampleData } from "../constants";
 
 const teamDetail = {
   teamId: "",
   teamName: "",
   players: [
     {
-      id:'p1',
+      id: "p1",
       name: "",
       type: "",
       runs: 0,
       balls: 0,
       wickets: 0,
+      matches: 0,
     },
     {
-      id:'p2',
+      id: "p2",
       name: "",
       type: "",
       runs: 0,
       balls: 0,
       wickets: 0,
+      matches: 0,
     },
     {
-      id:'p3',
+      id: "p3",
       name: "",
       type: "",
       runs: 0,
       balls: 0,
       wickets: 0,
+      matches: 0,
     },
   ],
-  balls: 6,
-  wickets: 0,
-  score: 0,
-  currScore: 0,
-  chance: true,
-  winner: false,
   matches: 0,
   wins: 0,
   loss: 0,
+  points: 0,
 };
 
 const Team = ({ index, teamInfo, teamsInfo, setTeamsInfo }) => {
@@ -110,10 +109,10 @@ const TeamsDetail = () => {
         matchlist.push({
           matchNo: i,
           teamA: {
-            name: teamsInfo[0].teamName,
             balls: 0,
             wickets: 0,
             score: 0,
+            name: teamsInfo[0].teamName,
             players: teamsInfo[0].players,
           },
           teamB: {
@@ -132,40 +131,37 @@ const TeamsDetail = () => {
     localStorage.setItem("matches", JSON.stringify(matchlist));
   };
 
-  const createPointsTable = () => {
-    const pointsTable = [];
-    teamsInfo.forEach((team) => {
-      pointsTable.push({
-        teamName: team.teamName,
-        matches: 0,
-        wins: 0,
-        loss: 0,
-        points: 0,
-      });
-    });
-    localStorage.setItem("pointsTable", JSON.stringify(pointsTable));
-  };
-
   const createTeams = () => {
     localStorage.setItem("teamsInfo", JSON.stringify(teamsInfo));
     setIsTeamCreated(true);
   };
 
+  const autofillData = (event) => {
+    if (event.currentTarget.checked) {
+      setTeamsInfo(teamsSampleData.slice(0, location.state.teams));
+    } else {
+      resetTeams();
+    }
+  };
+
   useEffect(() => {
     if (isTeamCreated) {
       createMatches();
-      createPointsTable();
       navigate("/playground");
     }
   }, [isTeamCreated]);
 
-  useEffect(() => {
+  const resetTeams = () => {
     const teams = [];
+    for (let i = 0; i < location.state.teams; i++) {
+      teams.push(structuredClone({ ...teamDetail, teamId: v4() }));
+      setTeamsInfo([...teams]);
+    }
+  };
+
+  useEffect(() => {
     if (location?.state?.teams) {
-      for (let i = 0; i < location.state.teams; i++) {
-        teams.push(structuredClone({ ...teamDetail, teamId: v4() }));
-        setTeamsInfo([...teams]);
-      }
+      resetTeams();
     }
   }, []);
 
@@ -176,6 +172,18 @@ const TeamsDetail = () => {
           <h2 className="text-lg sm:text-2xl font-semibold text-center text-gray-800">
             Team Details
           </h2>
+          <div className="flex items-center mr-2">
+            <input
+              id="autofill"
+              type="checkbox"
+              value="batsman"
+              onChange={autofillData}
+              className="w-4 h-4 border-2 border-gray-800 rounded-sm mr-1"
+            />
+            <label htmlFor="autofill" className="text-base font-medium">
+              Autofill
+            </label>
+          </div>
           {location?.state?.teams === 2 && (
             <Input
               min={1}

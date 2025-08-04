@@ -8,6 +8,7 @@ const RadioButton = ({ index, teamInfo, onChange }) => {
             id={"batsman" + teamInfo.teamId + index}
             name={teamInfo.teamId + index}
             value="batsman"
+            checked={teamInfo.players[index].type === "batsman"}
             onChange={onChange}
             className="peer sr-only"
           />
@@ -22,6 +23,7 @@ const RadioButton = ({ index, teamInfo, onChange }) => {
             id={"bowler" + teamInfo.teamId + index}
             name={teamInfo.teamId + index}
             value="bowler"
+            checked={teamInfo.players[index].type === "bowler"}
             onChange={onChange}
             className="peer sr-only"
           />
@@ -33,5 +35,5 @@ const RadioButton = ({ index, teamInfo, onChange }) => {
       </div>
     </div>
   );
-}
+};
 export default RadioButton;

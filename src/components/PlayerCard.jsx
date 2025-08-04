@@ -6,7 +6,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
       <div className="w-full flex flex-col items-center">
         <div className="flex items-center gap-4 mb-4">
           <h1
-            className={`flex gap-2 font-semibold text-xl sm:text-[28px] text-gray-900`}
+            className={`flex gap-2 font-semibold text-xl sm:text-[26px] text-gray-900`}
           >
             {player.chance ? (
               <svg
@@ -17,7 +17,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
                 x="0px"
                 y="0px"
                 // width={28}
-                className="w-6 sm:w-7"
+                className="w-6 sm:w-6.5"
                 viewBox="0 0 122.25 122.88"
                 xmlSpace="preserve"
               >
@@ -34,7 +34,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
                 x="0px"
                 y="0px"
                 // width={28}
-                className="w-5 sm:w-7"
+                className="w-5 sm:w-6.5"
                 viewBox="0 0 122.88 122.88"
                 xmlSpace="preserve"
               >
@@ -73,7 +73,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             >
               <span>{bowler[0]?.name}</span>
               <span>
-                {bowler[0]?.wickets}/({bowler[0]?.balls})
+                {bowler[0]?.wickets}-{bowler[0]?.runs} ({bowler[0]?.balls})
               </span>
             </p>
           </div>
@@ -121,19 +121,21 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             {bowler.map((bts, index) => (
               <p
                 key={index}
-               className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[132px] font-semibold mt-3"
-            >
+                className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[132px] font-semibold mt-3"
+              >
                 <span>{bts.name}</span>
                 <span>
-                  {bts.wickets}/({bts.balls})
+                  {bowler[0]?.wickets}-{bowler[0]?.runs} ({bowler[0]?.balls})
                 </span>
               </p>
             ))}
           </div>
           {result?.split(" ")[0] === player.name && (
             <div
-              className={`absolute bottom-10 text-xl font-bold mt-6 text-center text-[#eeeeee] ${
-                player.id === 1 ? "w-full left-[50%]" : "-left-1/2 sm:-left-[40%]"
+              className={`absolute bottom-10 sm:bottom-0 text-xl font-bold mt-6 text-center text-[#eeeeee] ${
+                player.id === 1
+                  ? "w-full left-[50%]"
+                  : "-left-1/2 sm:-left-[40%]"
               }`}
             >
               {result}

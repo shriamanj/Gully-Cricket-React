@@ -40,6 +40,7 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
     let batsmanInx = player.players.findIndex(
       (item) => item.id === batsmanRef.current.id
     );
+    
     player.currScore = Math.floor(Math.random() * 8);
     if (player.currScore === 7) {
       player.wickets += 1;
@@ -48,7 +49,9 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
       player.chance = !player.chance;
       team.players[bowlerInx].wickets += 1;
       team.players[bowlerInx].balls += 1;
+      player.players[batsmanInx].balls += 1;
     } else if (player.currScore === 5) {
+      team.players[bowlerInx].runs += 1;
       player.currScore = "Wide";
       player.score += 1;
     } else {
@@ -56,22 +59,32 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
       player.balls = Math.max(player.balls - 1, 0);
       player.chance = !player.chance;
       team.players[bowlerInx].balls += 1;
+      team.players[bowlerInx].runs += player.currScore;
       player.players[batsmanInx].balls += 1;
       player.players[batsmanInx].runs += player.currScore;
     }
 
     if (player.name === teamA.name) {
-      setTeamA({ ...player });
-      setTeamB({
-        ...teamB,
-        chance: player.currScore === "Wide" ? false : true,
-      });
+      if (teamB.wickets !== 2) {
+        setTeamA({ ...player });
+        setTeamB({
+          ...teamB,
+          chance: player.currScore === "Wide" ? false : true,
+        });
+      } else {
+        setTeamA({ ...player, chance: true });
+      }
     } else {
       setTeamB({ ...player });
-      setTeamA({
-        ...teamA,
-        chance: player.currScore === "Wide" ? false : true,
-      });
+      if (teamA.wickets !== 2) {
+        setTeamB({ ...player });
+        setTeamA({
+          ...teamA,
+          chance: player.currScore === "Wide" ? false : true,
+        });
+      } else {
+        setTeamB({ ...player, chance: true });
+      }
     }
 
     const matchInd = matches.findIndex(
@@ -96,25 +109,6 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
     }
   };
 
-  const updatePointsTable = (winTeam, lossTeam, status) => {
-    const pointsTable = JSON.parse(localStorage.getItem("pointsTable"));
-    const winIdx = pointsTable.findIndex((item) => item.teamName === winTeam);
-    const lossIdx = pointsTable.findIndex((item) => item.teamName === lossTeam);
-    if (status === "draw") {
-      pointsTable[winIdx].matches += 1;
-      pointsTable[winIdx].points += 1;
-      pointsTable[lossIdx].matches += 1;
-      pointsTable[lossIdx].points += 1;
-    } else {
-      pointsTable[winIdx].matches += 1;
-      pointsTable[winIdx].wins += 1;
-      pointsTable[winIdx].points += 2;
-      pointsTable[lossIdx].matches += 1;
-      pointsTable[lossIdx].loss += 1;
-    }
-    localStorage.setItem("pointsTable", JSON.stringify(pointsTable));
-  };
-
   const updateMatches = (result) => {
     const matchInd = matches.findIndex(
       (item) => item.matchNo === matchInfo?.matchNo
@@ -124,23 +118,66 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
     localStorage.setItem("matches", JSON.stringify(matches));
   };
 
+  const updateTeamsInfo = (winTeam, lossTeam, status) => {
+    const playerData = JSON.parse(localStorage.getItem("teamsInfo"));
+    const winInx = playerData.findIndex((item) => {
+      return item.teamName === winTeam.name;
+    });
+    const lossInx = playerData.findIndex((item) => {
+      return item.teamName === lossTeam.name;
+    });
+    if (status === "draw") {
+      playerData[winInx].matches += 1;
+      playerData[winInx].points += 1;
+      playerData[lossInx].matches += 1;
+      playerData[lossInx].points += 1;
+    } else {
+      playerData[winInx].matches += 1;
+      playerData[winInx].wins += 1;
+      playerData[winInx].points += 2;
+      playerData[lossInx].matches += 1;
+      playerData[lossInx].loss += 1;
+    }
+    playerData[winInx].players.forEach((player, index) => {
+      const plInd = winTeam.players.findIndex((item) => item.id === player.id);
+      playerData[winInx].players[index] = {
+        ...player,
+        runs: player.runs + winTeam.players[plInd].runs,
+        balls: player.balls + winTeam.players[plInd].balls,
+        wickets: player.wickets + winTeam.players[plInd].wickets,
+        matches: player.matches + 1,
+      };
+    });
+    playerData[lossInx].players.forEach((player, index) => {
+      const plInd = lossTeam.players.findIndex((item) => item.id === player.id);
+      playerData[lossInx].players[index] = {
+        ...player,
+        runs: player.runs + lossTeam.players[plInd].runs,
+        balls: player.balls + lossTeam.players[plInd].balls,
+        wickets: player.wickets + lossTeam.players[plInd].wickets,
+        matches: player.matches + 1,
+      };
+    });
+    localStorage.setItem("teamsInfo", JSON.stringify(playerData));
+  };
+
   const winTeamA = () => {
     const result = `${teamA.name} won by ${teamA.score - teamB.score} runs`;
     updateMatches(result);
-    updatePointsTable(teamA.name, teamB.name, "win");
+    updateTeamsInfo(teamA, teamB, "win");
   };
 
   const winTeamB = () => {
     const result = `${teamB.name} won by ${teamB.score - teamA.score} runs`;
     updateMatches(result);
-    updatePointsTable(teamB.name, teamA.name, "win");
+    updateTeamsInfo(teamB, teamA, "win");
   };
 
   const matchDraw = () => {
     const result = "Match Draw";
     updateMatches(result);
-    updatePointsTable(teamA.name, teamB.name, "draw");
     alert("Match Draw");
+    updateTeamsInfo(teamA, teamB, "draw");
   };
 
   useEffect(() => {
@@ -155,11 +192,18 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
         }
       }
     }
-    if (teamA.wickets === 2 || teamB.wickets === 2) {
+    if (
+      matchInfo?.result === "" &&
+      (teamA.wickets === 2 || teamB.wickets === 2)
+    ) {
       if (teamB.wickets === 2 && teamA.score > teamB.score) {
         winTeamA();
-      } else if (teamA.wickets === 2 && teamB.score > teamA.score) {
+      } else if (teamA.wickets === 2 && teamA.score < teamB.score) {
         winTeamB();
+      } else if (teamA.wickets === 2 && teamA.score > teamB.score) {
+        if (teamB.balls === 0) winTeamA();
+      } else if (teamB.wickets === 2 && teamA.score < teamB.score) {
+        if (teamA.balls === 0) winTeamB();
       }
     }
   }, [teamA, teamB]);
@@ -172,7 +216,7 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
         score: matchInfo.teamA.score,
         wickets: matchInfo.teamA.wickets,
         players: matchInfo.teamA.players,
-        balls:6,
+        balls: 6,
         currScore: 0,
         chance: true,
       });
@@ -184,7 +228,7 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
         score: matchInfo.teamB.score,
         wickets: matchInfo.teamB.wickets,
         players: matchInfo.teamB.players,
-        balls:6,
+        balls: 6,
         currScore: 0,
         chance: false,
       });
