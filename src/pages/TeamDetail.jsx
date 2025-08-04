@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { calculateMatches } from "../utils/utils";
 import { v4 } from "uuid";
 import RadioButton from "../components/RadioButton";
-import { teamsSampleData } from "../constants";
+import { teamsSampleData } from "../mock/data";
 
 const teamDetail = {
   teamId: "",
