@@ -49,7 +49,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
         <p className="text-xl sm:text-[30px] font-bold text-gray-900">
           {player.score}/{player.wickets}{" "}
           <span className="text-sm sm:text-base font-semibold">
-            ({6 - player.balls} balls)
+            ({result !== "" ? player.balls : 6 - player.balls} balls)
           </span>
         </p>
       </div>
@@ -59,7 +59,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             <p
               ref={batsmanRef}
               id={batsman[player.wickets]?.id}
-              className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[156px] font-semibold"
+              className="flex justify-between text-sm sm:text-base w-[120px] sm:w-[132px] font-semibold"
             >
               <span>{batsman[player.wickets]?.name}</span>
               <span>
@@ -69,7 +69,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             </p>
             <p
               id={"bowler"}
-              className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[156px] font-semibold mt-1"
+              className="flex justify-between text-sm sm:text-base w-[120px] sm:w-[132px] font-semibold mt-1"
             >
               <span>{bowler[0]?.name}</span>
               <span>
@@ -109,7 +109,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
               {batsman.map((bts, index) => (
                 <p
                   key={index}
-                  className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[156px] font-semibold"
+                  className="flex justify-between text-sm sm:text-base w-[120px] sm:w-[132px] font-semibold"
                 >
                   <span>{bts.name}</span>
                   <span>
@@ -121,7 +121,7 @@ const PlayerCard = ({ batsmanRef, player, bowler, result, handleHit }) => {
             {bowler.map((bts, index) => (
               <p
                 key={index}
-                className="flex justify-between text-sm sm:text-base w-[110px] sm:w-[156px] font-semibold mt-3"
+                className="flex justify-between text-sm sm:text-base w-[120px] sm:w-[132px] font-semibold mt-3"
               >
                 <span>{bts.name}</span>
                 <span>

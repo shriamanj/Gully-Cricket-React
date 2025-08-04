@@ -53,7 +53,7 @@ const Batsmans = ({ tableData }) => {
                   <td className="text-gray-700">{data.matches}</td>
                   <td className="text-gray-700 font-semibold">{data.runs}</td>
                   <td className="text-gray-700">
-                    {data.runs ? data.runs / data.matches : 0}
+                    {(data.runs ? data.runs / data.matches : 0).toFixed(2)}
                   </td>
                   <td className="text-gray-800">
                     {data.runs
