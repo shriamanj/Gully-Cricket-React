@@ -68,7 +68,7 @@ const Playground = () => {
         ))}
       </div>
       <div className="w-full sm:w-[70%] flex justify-center bg-white pt-2 sm:pt-10">
-        {currMatch && <PlayMatch matches={matches} setMatches={setMatches} matchInfo={currMatch} />}
+        {currMatch && <PlayMatch matches={matches} setMatches={setMatches} matchInfo={currMatch} setCurrMatch={setCurrMatch} />}
       </div>
     </div>
   );

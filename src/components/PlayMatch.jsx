@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import PlayerCard from "./PlayerCard";
 
-function PlayMatch({ matchInfo, matches, setMatches }) {
+function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
   const batsmanRef1 = useRef();
   const batsmanRef2 = useRef();
 
@@ -40,7 +40,7 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
     let batsmanInx = player.players.findIndex(
       (item) => item.id === batsmanRef.current.id
     );
-    
+
     player.currScore = Math.floor(Math.random() * 8);
     if (player.currScore === 7) {
       player.wickets += 1;
@@ -115,6 +115,8 @@ function PlayMatch({ matchInfo, matches, setMatches }) {
     );
     matches[matchInd].result = result;
     setMatches([...matches]);
+    matchInfo.result = result;
+    setCurrMatch({ ...matchInfo });
     localStorage.setItem("matches", JSON.stringify(matches));
   };
 
