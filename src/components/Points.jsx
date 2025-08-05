@@ -4,7 +4,7 @@ const Points = ({tableData}) => {
       <table className="w-full table-auto border-collapse">
         <thead>
           <tr className="bg-gray-800 font-semibold text-white text-lg">
-            <th className="py-3 rounded-tl-lg min-w-12">POS</th>
+            <th className="py-3 rounded-tl-lg min-w-12">Pos</th>
             <th className="text-start">
               <span className="flex sm:hidden">T</span>
               <span className="hidden sm:flex">Team</span>

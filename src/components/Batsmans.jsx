@@ -4,10 +4,10 @@ const Batsmans = ({ tableData }) => {
       <table className="w-full table-auto border-collapse">
         <thead>
           <tr className="bg-gray-800 font-semibold text-white text-lg">
-            <th className="py-3 rounded-tl-lg min-w-12">POS</th>
+            <th className="py-3 rounded-tl-lg min-w-12">Pos</th>
             <th className="text-start">
               <span className="flex sm:hidden">N</span>
-              <span className="hidden sm:flex">Batsman Name</span>
+              <span className="hidden sm:flex">Batsman</span>
             </th>
             <th>
               <span className="flex sm:hidden justify-center min-w-8">M</span>
