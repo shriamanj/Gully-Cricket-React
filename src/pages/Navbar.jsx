@@ -74,12 +74,14 @@ const Navbar = () => {
           >
             Points Table
           </Link>
-          <button
-            onClick={handleInstallClick}
-            className="hidden sm:flex bg-gray-600 text-white px-4 py-2 rounded-lg border border-gray-700 shadow hover:bg-gray-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200"
-          >
-            Install
-          </button>
+          {showInstallButton && (
+            <button
+              onClick={handleInstallClick}
+              className="hidden sm:flex bg-gray-600 text-white px-4 py-2 rounded-lg border border-gray-700 shadow hover:bg-gray-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200"
+            >
+              Install
+            </button>
+          )}
           <button
             id="menu-btn"
             onClick={() => setShowMenu(!showMenu)}
@@ -115,12 +117,14 @@ const Navbar = () => {
           <Link to="/table" className="block text-gray-700 hover:text-blue-500">
             Points Table
           </Link>
-          <button
-            onClick={handleInstallClick}
-            className="flex justify-end text-gray-700 hover:text-blue-500"
-          >
-            Download App
-          </button>
+          {showInstallButton && (
+            <button
+              onClick={handleInstallClick}
+              className="flex justify-end text-gray-700 hover:text-blue-500"
+            >
+              Download App
+            </button>
+          )}
         </div>
       )}
     </>
