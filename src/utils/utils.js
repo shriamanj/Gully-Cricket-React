@@ -5,6 +5,7 @@ export const calculateMatches = (teams) => {
       matches.push({
         teamA: {
           name: teams[i].teamName,
+          icon: teams[i].icon,
           balls: 0,
           wickets: 0,
           score: 0,
@@ -12,6 +13,7 @@ export const calculateMatches = (teams) => {
         },
         teamB: {
           name: teams[j].teamName,
+          icon: teams[j].icon,
           balls: 0,
           wickets: 0,
           score: 0,

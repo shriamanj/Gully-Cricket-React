@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import PlayerCard from "./PlayerCard";
+import TeamCard from "./TeamCard";
 
 function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
   const batsmanRef1 = useRef();
@@ -9,23 +9,27 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
     id: 1,
     name: "",
     balls: 6,
+    eachBallScore: ["", "", "", "", "", ""],
     score: 0,
     wickets: 0,
     currScore: 0,
     chance: true,
     winner: false,
     players: [],
+    icon: "",
   });
   const [teamB, setTeamB] = useState({
     id: 2,
     name: "",
     balls: 6,
+    eachBallScore: ["", "", "", "", "", ""],
     score: 0,
     wickets: 0,
     currScore: 0,
     chance: false,
     winner: false,
     players: [],
+    icon: "",
   });
 
   const handleClick = (player) => {
@@ -42,6 +46,8 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
     );
 
     player.currScore = Math.floor(Math.random() * 8);
+    const ballIdx = player.eachBallScore.findIndex((ball) => ball === "");
+
     if (player.currScore === 7) {
       player.wickets += 1;
       player.currScore = "Wicket";
@@ -50,10 +56,13 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
       team.players[bowlerInx].wickets += 1;
       team.players[bowlerInx].balls += 1;
       player.players[batsmanInx].balls += 1;
+      player.eachBallScore[ballIdx] = "W";
     } else if (player.currScore === 5) {
       team.players[bowlerInx].runs += 1;
       player.currScore = "Wide";
       player.score += 1;
+      player.eachBallScore.push("");
+      player.eachBallScore[ballIdx] = "Wd";
     } else {
       player.score += player.currScore;
       player.balls = Math.max(player.balls - 1, 0);
@@ -62,6 +71,7 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
       team.players[bowlerInx].runs += player.currScore;
       player.players[batsmanInx].balls += 1;
       player.players[batsmanInx].runs += player.currScore;
+      player.eachBallScore[ballIdx] = player.currScore;
     }
 
     if (player.name === teamA.name) {
@@ -97,6 +107,7 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
         wickets: teamA.wickets,
         balls: 6 - teamA.balls,
         players: teamA.players,
+        eachBallScore: teamA.eachBallScore,
       };
       matches[matchInd].teamB = {
         ...matches[matchInd].teamB,
@@ -104,6 +115,7 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
         wickets: teamB.wickets,
         balls: 6 - teamB.balls,
         players: teamB.players,
+        eachBallScore: teamA.eachBallScore,
       };
       setMatches([...matches]);
     }
@@ -115,8 +127,7 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
     );
     matches[matchInd].result = result;
     setMatches([...matches]);
-    matchInfo.result = result;
-    setCurrMatch({ ...matchInfo });
+    setCurrMatch({ ...matches[matchInd], result: result });
     localStorage.setItem("matches", JSON.stringify(matches));
   };
 
@@ -215,9 +226,11 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
       setTeamA({
         ...teamA,
         name: matchInfo.teamA.name,
+        icon: matchInfo.teamA.icon,
         score: matchInfo.teamA.score,
         wickets: matchInfo.teamA.wickets,
         players: matchInfo.teamA.players,
+        eachBallScore: matchInfo?.teamA?.eachBallScore || ["", "", "", "", "", ""],
         balls: 6,
         currScore: 0,
         chance: true,
@@ -227,9 +240,11 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
       setTeamB({
         ...teamB,
         name: matchInfo.teamB.name,
+        icon: matchInfo.teamB.icon,
         score: matchInfo.teamB.score,
         wickets: matchInfo.teamB.wickets,
         players: matchInfo.teamB.players,
+        eachBallScore: matchInfo?.teamB?.eachBallScore || ["", "", "", "", "", ""],
         balls: 6,
         currScore: 0,
         chance: false,
@@ -239,21 +254,25 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
 
   return (
     <div className="relative flex justify-center items-center w-[340px] sm:w-[600px] h-[420px] sm:h-[600px] bg-gradient-to-br from-green-500 via-green-300 to-green-600 rounded-[140px] sm:rounded-full shadow-2xl animate-fade-in">
-      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[40px]  sm:w-[70px] h-[35%] sm:h-[40%] bg-gradient-to-b from-yellow-200 to-yellow-300 rounded-md sm:rounded-xl shadow-lg z-0"></div>
+      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30px]  sm:w-[70px] h-[35%] sm:h-[40%] bg-gradient-to-b from-yellow-200 to-yellow-300 rounded-md sm:rounded-xl shadow-lg z-0"></div>
       <div className="relative z-10 flex sm:w-full h-full items-center justify-between px-0 sm:px-8">
         <div className="w-full flex justify-center items-center">
-          <PlayerCard
+          <TeamCard
             batsmanRef={batsmanRef1}
-            player={teamA}
+            team={teamA}
+            teamAName={teamA.name}
+            teamBName={teamB.name}
             bowler={teamB.players.filter((player) => player.type === "bowler")}
             result={matchInfo?.result}
             handleHit={handleClick}
           />
         </div>
         <div className="w-full flex justify-center items-center">
-          <PlayerCard
+          <TeamCard
             batsmanRef={batsmanRef2}
-            player={teamB}
+            team={teamB}
+            teamAName={teamA.name}
+            teamBName={teamB.name}
             bowler={teamA.players.filter((player) => player.type === "bowler")}
             result={matchInfo?.result}
             handleHit={handleClick}

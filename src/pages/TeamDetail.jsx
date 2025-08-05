@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { calculateMatches } from "../utils/utils";
 import { v4 } from "uuid";
 import RadioButton from "../components/RadioButton";
-import { teamsSampleData } from "../mock/data";
+import { icons, iplTeams, teamsSampleData, worldTeams } from "../mock/data";
 
 const teamDetail = {
   teamId: "",
   teamName: "",
+  icon: "",
   players: [
     {
       id: "p1",
@@ -113,10 +114,12 @@ const TeamsDetail = () => {
             wickets: 0,
             score: 0,
             name: teamsInfo[0].teamName,
+            icon: teamsInfo[0].icon,
             players: teamsInfo[0].players,
           },
           teamB: {
             name: teamsInfo[1].teamName,
+            icon: teamsInfo[1].icon,
             balls: 0,
             wickets: 0,
             score: 0,
@@ -138,7 +141,10 @@ const TeamsDetail = () => {
 
   const autofillData = (event) => {
     if (event.currentTarget.checked) {
-      setTeamsInfo(teamsSampleData.slice(0, location.state.teams));
+      let teams = teamsSampleData;
+      if (location.state.matchType === "ipl") teams = iplTeams;
+      if (location.state.matchType === "world-cup") teams = worldTeams;
+      setTeamsInfo(teams.slice(0, location.state.teams));
     } else {
       resetTeams();
     }
@@ -154,9 +160,11 @@ const TeamsDetail = () => {
   const resetTeams = () => {
     const teams = [];
     for (let i = 0; i < location.state.teams; i++) {
-      teams.push(structuredClone({ ...teamDetail, teamId: v4() }));
-      setTeamsInfo([...teams]);
+      teams.push(
+        structuredClone({ ...teamDetail, teamId: v4(), icon: icons[i] })
+      );
     }
+    setTeamsInfo([...teams]);
   };
 
   useEffect(() => {
@@ -172,30 +180,30 @@ const TeamsDetail = () => {
           <h2 className="text-lg sm:text-2xl font-semibold text-center text-gray-800">
             Team Details
           </h2>
-          <div className="flex items-center mr-2">
+          <div className="flex items-center">
             <input
               id="autofill"
               type="checkbox"
               value="batsman"
               onChange={autofillData}
-              className="w-4 h-4 border-2 border-gray-800 rounded-sm mr-1"
+              className="w-4 h-4 border-2 border-gray-800 rounded-sm mr-2"
             />
-            <label htmlFor="autofill" className="text-base font-medium">
+            <label htmlFor="autofill" className="text-base mr-2 sm:mr-4 font-medium">
               Autofill
             </label>
+            {location?.state?.teams === 2 && (
+              <Input
+                min={1}
+                max={5}
+                id="matches"
+                type="number"
+                value={matches}
+                disabled={location?.state?.matchType === "single"}
+                onChange={(event) => setMatches(parseInt(event.target.value))}
+                placeholder="No. of Matches Eg. 5"
+              />
+            )}
           </div>
-          {location?.state?.teams === 2 && (
-            <Input
-              min={1}
-              max={5}
-              id="matches"
-              type="number"
-              value={matches}
-              disabled={location?.state?.matchType === "single"}
-              onChange={(event) => setMatches(parseInt(event.target.value))}
-              placeholder="No. of Matches Eg. 5"
-            />
-          )}
         </div>
         {teamsInfo.map((team, index) => {
           return (

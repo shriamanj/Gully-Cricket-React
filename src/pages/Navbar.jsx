@@ -1,21 +1,46 @@
 import { Link } from "react-router";
-import logo from "../assets/3a-logo.png";
+import logo from "../assets/images/logo/3a-logo.png";
 import { useEffect, useRef, useState } from "react";
 
 const Navbar = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showInstall, setShowInstall] = useState(false);
+  const [showInstallButton, setShowInstallButton] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef();
 
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt(); // Trigger the install prompt
+
+      const choiceResult = await deferredPrompt.userChoice;
+      console.log("User choice:", choiceResult.outcome);
+
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the A2HS prompt");
+      } else {
+        console.log("User dismissed the A2HS prompt");
+      }
+
+      setDeferredPrompt(null); // Clear saved prompt
+      setShowInstallButton(false); // Hide the button
+    }
+  };
+
   useEffect(() => {
-    const handler = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowInstall(true);
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault(); // Prevent auto prompt
+      setDeferredPrompt(e); // Save the event for triggering later
+      setShowInstallButton(true); // Show your custom "Install" button
     };
-    window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
+    };
   }, []);
 
   useEffect(() => {
@@ -28,17 +53,6 @@ const Navbar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showMenu]);
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === "accepted") {
-        setShowInstall(false);
-      }
-      setDeferredPrompt(null);
-    }
-  };
 
   return (
     <>
@@ -60,7 +74,7 @@ const Navbar = () => {
           >
             Points Table
           </Link>
-          {showInstall && (
+          {showInstallButton && (
             <button
               onClick={handleInstallClick}
               className="hidden sm:flex bg-gray-600 text-white px-4 py-2 rounded-lg border border-gray-700 shadow hover:bg-gray-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200"
@@ -90,7 +104,10 @@ const Navbar = () => {
         </div>
       </div>
       {showMenu && (
-        <div  ref={menuRef} className="z-10 border-b-2 flex flex-col justify-end sm:hidden absolute text-right top-16 font-semibold bg-white px-4 py-4 w-full space-y-2">
+        <div
+          ref={menuRef}
+          className="z-10 border-b-2 flex flex-col justify-end sm:hidden absolute text-right top-16 font-semibold bg-white px-4 py-4 w-full space-y-2"
+        >
           <Link
             to="/playground"
             className="block text-gray-700 hover:text-blue-500"
@@ -100,7 +117,7 @@ const Navbar = () => {
           <Link to="/table" className="block text-gray-700 hover:text-blue-500">
             Points Table
           </Link>
-          {showInstall && (
+          {showInstallButton && (
             <button
               onClick={handleInstallClick}
               className="flex justify-end text-gray-700 hover:text-blue-500"
