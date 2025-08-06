@@ -937,7 +937,7 @@ export const iplTeams = [
       },
       {
         id: "kkr3",
-        name: "V Chakravarthy",
+        name: "V Chakrvrty",
         type: "bowler",
         runs: 0,
         balls: 0,

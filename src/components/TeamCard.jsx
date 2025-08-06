@@ -55,7 +55,7 @@ const TeamCard = ({
             <p
               ref={batsmanRef}
               id={batsman[team.wickets]?.id}
-              className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[192px] pl-1  font-semibold mt-1 ${
+              className={`flex justify-between text-[13px] sm:text-base w-[140px] sm:w-[192px] pl-1  font-semibold mt-1 ${
                 teamAName === team.name ? "mr-2" : "ml-2"
               }`}
             >
@@ -68,7 +68,7 @@ const TeamCard = ({
             </p>
             <p
               id={"bowler"}
-              className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[192px] pl-1  font-semibold mt-1 ${
+              className={`flex justify-between text-[13px] sm:text-base w-[140px] sm:w-[192px] pl-1  font-semibold mt-1 ${
                 teamAName === team.name ? "mr-2" : "ml-2"
               }`}
             >
@@ -104,7 +104,7 @@ const TeamCard = ({
               {batsman.map((bts, index) => (
                 <p
                   key={index}
-                  className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[192px] pl-1  font-semibold mt-1 ${
+                  className={`flex justify-between text-[13px] sm:text-base w-[140px] sm:w-[192px] pl-1  font-semibold mt-1 ${
                     teamAName === team.name ? "mr-2" : "ml-2"
                   }`}
                 >
@@ -120,7 +120,7 @@ const TeamCard = ({
             {bowler.map((bts, index) => (
               <p
                 key={index}
-                className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[192px] pl-1  font-semibold mt-1 ${
+                className={`flex justify-between text-[13px] sm:text-base w-[140px] sm:w-[192px] pl-1  font-semibold mt-1 ${
                   teamAName === team.name ? "mr-2" : "ml-2"
                 }`}
               >

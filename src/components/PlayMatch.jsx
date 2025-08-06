@@ -230,7 +230,14 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
         score: matchInfo.teamA.score,
         wickets: matchInfo.teamA.wickets,
         players: matchInfo.teamA.players,
-        eachBallScore: matchInfo?.teamA?.eachBallScore || ["", "", "", "", "", ""],
+        eachBallScore: matchInfo?.teamA?.eachBallScore || [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+        ],
         balls: 6,
         currScore: 0,
         chance: true,
@@ -244,7 +251,14 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
         score: matchInfo.teamB.score,
         wickets: matchInfo.teamB.wickets,
         players: matchInfo.teamB.players,
-        eachBallScore: matchInfo?.teamB?.eachBallScore || ["", "", "", "", "", ""],
+        eachBallScore: matchInfo?.teamB?.eachBallScore || [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+        ],
         balls: 6,
         currScore: 0,
         chance: false,
@@ -253,8 +267,11 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
   }, [matchInfo]);
 
   return (
-    <div className="relative flex justify-center items-center w-[340px] sm:w-[600px] h-[420px] sm:h-[600px] bg-gradient-to-br from-green-500 via-green-300 to-green-600 rounded-[140px] sm:rounded-full shadow-2xl animate-fade-in">
+    <div className="relative flex justify-center items-center w-[350px] sm:w-[600px] h-[420px] sm:h-[600px] bg-gradient-to-br from-green-500 via-green-300 to-green-600 rounded-[140px] sm:rounded-full shadow-2xl animate-fade-in">
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30px]  sm:w-[70px] h-[35%] sm:h-[40%] bg-gradient-to-b from-yellow-200 to-yellow-300 rounded-md sm:rounded-xl shadow-lg z-0"></div>
+      <div className="absolute left-[calc(50%_-_16px)] top-6 sm:top-8 font-semibold border border-gray-800 rounded-full p-1 h-8 w-8 flex items-center justify-center text-gray-700">
+        {matchInfo.matchNo}
+      </div>
       <div className="relative z-10 flex sm:w-full h-full items-center justify-between px-0 sm:px-8">
         <div className="w-full flex justify-center items-center">
           <TeamCard
