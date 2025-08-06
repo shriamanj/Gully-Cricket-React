@@ -929,7 +929,7 @@ export const iplTeams = [
       {
         id: "kkr2",
         name: "A Russell",
-        type: "allrounder",
+        type: "batsman",
         runs: 0,
         balls: 0,
         wickets: 0,
@@ -1043,7 +1043,7 @@ export const iplTeams = [
       {
         id: "pbks2",
         name: "L Livingstone",
-        type: "allrounder",
+        type: "batsman",
         runs: 0,
         balls: 0,
         wickets: 0,

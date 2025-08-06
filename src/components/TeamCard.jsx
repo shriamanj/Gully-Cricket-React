@@ -41,7 +41,7 @@ const TeamCard = ({
             return (
               <div
                 key={index}
-                className="flex justify-center items-center text-sm px-1 py-0.5 w-6 h-6  rounded-full bg-gray-200"
+                className="flex justify-center items-center text-[10px] sm:text-sm px-1 py-0.5 w-4 sm:w-6 h-4 sm:h-6 rounded-full bg-gray-200"
               >
                 {ball}
               </div>
@@ -55,7 +55,7 @@ const TeamCard = ({
             <p
               ref={batsmanRef}
               id={batsman[team.wickets]?.id}
-              className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[180px] pl-1  font-semibold mt-1 ${
+              className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[192px] pl-1  font-semibold mt-1 ${
                 teamAName === team.name ? "mr-2" : "ml-2"
               }`}
             >
@@ -68,7 +68,7 @@ const TeamCard = ({
             </p>
             <p
               id={"bowler"}
-              className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[180px] pl-1  font-semibold mt-1 ${
+              className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[192px] pl-1  font-semibold mt-1 ${
                 teamAName === team.name ? "mr-2" : "ml-2"
               }`}
             >
@@ -104,7 +104,7 @@ const TeamCard = ({
               {batsman.map((bts, index) => (
                 <p
                   key={index}
-                  className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[180px] pl-1  font-semibold mt-1 ${
+                  className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[192px] pl-1  font-semibold mt-1 ${
                     teamAName === team.name ? "mr-2" : "ml-2"
                   }`}
                 >
@@ -120,7 +120,7 @@ const TeamCard = ({
             {bowler.map((bts, index) => (
               <p
                 key={index}
-                className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[180px] pl-1  font-semibold mt-1 ${
+                className={`flex justify-between text-[13px] sm:text-base w-[132px] sm:w-[192px] pl-1  font-semibold mt-1 ${
                   teamAName === team.name ? "mr-2" : "ml-2"
                 }`}
               >
@@ -136,7 +136,7 @@ const TeamCard = ({
           </div>
           {result?.split(" ")[0] === team.name && (
             <div
-              className={`absolute bottom-10 sm:bottom-0 text-xl font-bold mt-6 text-center text-[#eeeeee] ${
+              className={`absolute bottom-3 sm:bottom-0 text-xl font-bold mt-6 text-center  text-[#eeeeee] ${
                 team.id === 1 ? "w-full left-[50%]" : "-left-1/2 sm:-left-[40%]"
               }`}
             >
