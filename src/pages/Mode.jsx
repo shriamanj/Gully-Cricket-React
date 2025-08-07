@@ -12,7 +12,13 @@ const GameType = ({ onClick, image, title }) => {
       onClick={onClick}
       className="w-full h-60 sm:h-80  mx-auto  flex flex-col items-center justify-between gap-4 text-2xl font-bold px-6 sm:px-10 py-4 sm:py-8 bg-white cursor-pointer text-gray-800 border border-gray-400 rounded-2xl shadow-lg hover:bg-gray-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200"
     >
-      <img src={image} className="w-40" style={{ mixBlendMode: "multiply" }} />
+      {image && (
+        <img
+          src={image}
+          className="w-40"
+          style={{ mixBlendMode: "multiply" }}
+        />
+      )}
       <span className="mb-2">{title}</span>
     </button>
   );
@@ -23,6 +29,7 @@ const Mode = () => {
   const [series, SetSeries] = useState(false);
 
   const navigateToInfo = (teams, type) => {
+    localStorage.setItem("matchType", type);
     navigate("/info", { state: { teams: teams, matchType: type } });
   };
   const selectTeams = () => {
@@ -39,11 +46,6 @@ const Mode = () => {
             onClick={() => navigateToInfo(2, "single")}
           />
           <GameType
-            title="Tournament"
-            image={tournament}
-            onClick={() => selectTeams()}
-          />
-          <GameType
             title="IPL"
             image={ipl}
             onClick={() => navigateToInfo(10, "ipl")}
@@ -53,9 +55,14 @@ const Mode = () => {
             image={worldCup}
             onClick={() => navigateToInfo(12, "world-cup")}
           />
+          <GameType
+            title="Tournament"
+            image={tournament}
+            onClick={() => selectTeams()}
+          />
         </div>
         {series && (
-          <div className="mt-6 sm:mt-10 animate-fade-in">
+          <div className="mb-6 sm:mb-10 animate-fade-in">
             <p className="text-center text-base sm:text-lg font-semibold text-gray-700 mb-4 sm:mb-6">
               Select number of teams to play in series
             </p>

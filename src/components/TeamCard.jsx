@@ -19,10 +19,12 @@ const TeamCard = ({
           <h1
             className={`flex flex-col items-center gap-2 font-semibold text-xl sm:text-[26px] text-gray-900`}
           >
-            <img
-              src={team.icon}
-              className="w-6 sm:w-8 h-6 sm:h-8 rounded-sm"
-            ></img>
+            {team.icon && (
+              <img
+                src={team.icon}
+                className="w-6 sm:w-8 h-6 sm:h-8 rounded-sm"
+              ></img>
+            )}
             {team.name}
           </h1>
         </div>
@@ -140,7 +142,7 @@ const TeamCard = ({
                 team.id === 1 ? "w-full left-[50%]" : "-left-1/2 sm:-left-[40%]"
               }`}
             >
-              {result}
+              {result?.split(" ")[0] === team.name && result}
             </div>
           )}
         </>
