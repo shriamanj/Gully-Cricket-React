@@ -129,7 +129,7 @@ const TeamsDetail = () => {
         });
       }
     } else {
-      matchlist = calculateMatches(teamsInfo);
+      matchlist = calculateMatches(teamsInfo, location.state.matchType);
     }
     localStorage.setItem("matches", JSON.stringify(matchlist));
   };

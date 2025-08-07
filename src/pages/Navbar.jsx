@@ -58,7 +58,7 @@ const Navbar = () => {
     <>
       <div className="flex justify-between items-center bg-gray-900 text-white px-4 py-2 shadow">
         <Link to="/" className="flex gap-2 items-center">
-          <img src={logo} className="w-10 py-1" alt="Logo" />
+          {logo && <img src={logo} className="w-10 py-1" alt="Logo" />}
           <div className="text-2xl font-semibold">3A Softwares</div>
         </Link>
         <div className="flex gap-4 items-center">

@@ -115,7 +115,7 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
         wickets: teamB.wickets,
         balls: 6 - teamB.balls,
         players: teamB.players,
-        eachBallScore: teamA.eachBallScore,
+        eachBallScore: teamB.eachBallScore,
       };
       setMatches([...matches]);
     }
@@ -131,13 +131,13 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
     localStorage.setItem("matches", JSON.stringify(matches));
   };
 
-  const updateTeamsInfo = (winTeam, lossTeam, status) => {
+  const updateTeamsInfo = (winTeam, qLossTeam, status) => {
     const playerData = JSON.parse(localStorage.getItem("teamsInfo"));
     const winInx = playerData.findIndex((item) => {
       return item.teamName === winTeam.name;
     });
     const lossInx = playerData.findIndex((item) => {
-      return item.teamName === lossTeam.name;
+      return item.teamName === qLossTeam.name;
     });
     if (status === "draw") {
       playerData[winInx].matches += 1;
@@ -162,12 +162,14 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
       };
     });
     playerData[lossInx].players.forEach((player, index) => {
-      const plInd = lossTeam.players.findIndex((item) => item.id === player.id);
+      const plInd = qLossTeam.players.findIndex(
+        (item) => item.id === player.id
+      );
       playerData[lossInx].players[index] = {
         ...player,
-        runs: player.runs + lossTeam.players[plInd].runs,
-        balls: player.balls + lossTeam.players[plInd].balls,
-        wickets: player.wickets + lossTeam.players[plInd].wickets,
+        runs: player.runs + qLossTeam.players[plInd].runs,
+        balls: player.balls + qLossTeam.players[plInd].balls,
+        wickets: player.wickets + qLossTeam.players[plInd].wickets,
         matches: player.matches + 1,
       };
     });
@@ -189,9 +191,256 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
   const matchDraw = () => {
     const result = "Match Draw";
     updateMatches(result);
-    alert("Match Draw");
     updateTeamsInfo(teamA, teamB, "draw");
   };
+
+  useEffect(() => {
+    const matchType = localStorage.getItem("matchType");
+    if (matchType === "series") {
+      const unfinishedMatch = matches.filter(
+        (item) => item.result === "" && item.matchTypeId === "league"
+      );
+      if (unfinishedMatch.length === 0) {
+        const teamsInfo = JSON.parse(localStorage.getItem("teamsInfo"));
+        const topTwoTeams = teamsInfo
+          .sort((a, b) => b.points - a.points)
+          .slice(0, 2);
+        const fIndex = matches.findIndex(
+          (item) => item.matchTypeId === "final"
+        );
+        matches[fIndex].teamA.name = topTwoTeams[0].teamName;
+        matches[fIndex].teamA.icon = topTwoTeams[0].icon;
+        matches[fIndex].teamA.players = [
+          ...topTwoTeams[0].players.map((item) => {
+            return { ...item, balls: 0, runs: 0, wickets: 0 };
+          }),
+        ];
+        matches[fIndex].teamB.name = topTwoTeams[1].teamName;
+        matches[fIndex].teamB.icon = topTwoTeams[1].icon;
+        matches[fIndex].teamB.players = [
+          ...topTwoTeams[1].players.map((item) => {
+            return { ...item, balls: 0, runs: 0, wickets: 0 };
+          }),
+        ];
+        setMatches([...matches]);
+        localStorage.setItem("matches", JSON.stringify(matches));
+      }
+    } else if (matchType === "ipl") {
+      const q1Index = matches.findIndex(
+        (item) => item.matchTypeId === "qualifier1"
+      );
+      const q2Index = matches.findIndex(
+        (item) => item.matchTypeId === "qualifier2"
+      );
+      const elIndex = matches.findIndex(
+        (item) => item.matchTypeId === "eleminator"
+      );
+      const fIndex = matches.findIndex((item) => item.matchTypeId === "final");
+
+      if (matches?.[q1Index]?.teamA?.name === "TBQ") {
+        const unfinishedMatch = matches.filter(
+          (item) => item.matchTypeId === "league" && item.result === ""
+        );
+        if (unfinishedMatch.length === 0) {
+          const teamsData = JSON.parse(localStorage.getItem("teamsInfo"));
+          const topFourTeams = teamsData
+            .sort((a, b) => b.points - a.points)
+            .slice(0, 4);
+
+          matches[q1Index].teamA.name = topFourTeams[0].teamName;
+          matches[q1Index].teamA.icon = topFourTeams[0].icon;
+          matches[q1Index].teamA.players = [
+            ...topFourTeams[0].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+          matches[q1Index].teamB.name = topFourTeams[1].teamName;
+          matches[q1Index].teamB.icon = topFourTeams[1].icon;
+          matches[q1Index].teamB.players = [
+            ...topFourTeams[1].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+
+          matches[elIndex].teamA.name = topFourTeams[2].teamName;
+          matches[elIndex].teamA.icon = topFourTeams[2].icon;
+          matches[elIndex].teamA.players = [
+            ...topFourTeams[2].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+          matches[elIndex].teamB.name = topFourTeams[3].teamName;
+          matches[elIndex].teamB.icon = topFourTeams[3].icon;
+          matches[elIndex].teamB.players = [
+            ...topFourTeams[3].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+          setMatches([...matches]);
+          localStorage.setItem("matches", JSON.stringify(matches));
+        }
+      } else if (matches?.[q2Index]?.teamA?.name === "TBQ") {
+        const unfinishedMatch = matches.filter(
+          (item) =>
+            item.matchTypeId === "qualifier1" &&
+            item.matchTypeId === "eleminator" &&
+            item.result === ""
+        );
+        if (unfinishedMatch.length === 0) {
+          const qWonTeam = matches[q1Index].result.includes(
+            matches[q1Index].teamA.name
+          )
+            ? "teamA"
+            : "teamB";
+          const qLossTeam = matches[q1Index].result.includes(
+            matches[q1Index].teamA.name
+          )
+            ? "teamB"
+            : "teamA";
+          matches[q2Index].teamA.name = matches[q1Index][qLossTeam].name;
+          matches[q2Index].teamA.icon = matches[q1Index][qLossTeam].icon;
+          matches[q2Index].teamA.players = [
+            ...matches[q1Index][qLossTeam].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+          const eWonTeam = matches[elIndex].result.includes(
+            matches[elIndex].teamA.name
+          )
+            ? "teamA"
+            : "teamB";
+          matches[q2Index].teamB.name = matches[elIndex][eWonTeam].name;
+          matches[q2Index].teamB.icon = matches[elIndex][eWonTeam].icon;
+          matches[q2Index].teamB.players = [
+            ...matches[elIndex][eWonTeam].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+
+          matches[fIndex].teamA.name = matches[q1Index][qWonTeam].name;
+          matches[fIndex].teamA.icon = matches[q1Index][qWonTeam].icon;
+          matches[fIndex].teamA.players = [
+            ...matches[q1Index][qWonTeam].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+
+          setMatches([...matches]);
+          localStorage.setItem("matches", JSON.stringify(matches));
+        }
+      } else if (matches?.[fIndex]?.teamB?.name === "TBQ") {
+        const unfinishedMatch = matches.filter(
+          (item) => item.matchTypeId === "qualifier2" && item.result === ""
+        );
+        if (unfinishedMatch.length === 0) {
+          const qWonTeam = matches[q2Index].result.includes(
+            matches[q2Index].teamA.name
+          )
+            ? "teamA"
+            : "teamB";
+          matches[fIndex].teamB.name = matches[q2Index][qWonTeam].name;
+          matches[fIndex].teamB.icon = matches[q2Index][qWonTeam].icon;
+          matches[fIndex].teamB.players = [
+            ...matches[q2Index][qWonTeam].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+
+          setMatches([...matches]);
+          localStorage.setItem("matches", JSON.stringify(matches));
+        }
+      }
+    } else if (matchType === "world-cup") {
+      const sf1 = matches.findIndex(
+        (item) => item.matchTypeId === "semiFinal1"
+      );
+      const sf2 = matches.findIndex(
+        (item) => item.matchTypeId === "semiFinal2"
+      );
+      const fIndex = matches.findIndex((item) => item.matchTypeId === "final");
+      if (matches?.[sf1]?.teamA?.name === "TBQ") {
+        const unfinishedMatch = matches.filter(
+          (item) => item.matchTypeId === "league" && item.result === ""
+        );
+        if (unfinishedMatch.length === 0) {
+          const teamsData = JSON.parse(localStorage.getItem("teamsInfo"));
+          const topFourTeams = teamsData
+            .sort((a, b) => b.points - a.points)
+            .slice(0, 4);
+
+          matches[sf1].teamA.name = topFourTeams[0].teamName;
+          matches[sf1].teamA.icon = topFourTeams[0].icon;
+          matches[sf1].teamA.players = [
+            ...topFourTeams[0].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+          matches[sf1].teamB.name = topFourTeams[3].teamName;
+          matches[sf1].teamB.icon = topFourTeams[3].icon;
+          matches[sf1].teamB.players = [
+            ...topFourTeams[3].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+
+          matches[sf2].teamA.name = topFourTeams[1].teamName;
+          matches[sf2].teamA.icon = topFourTeams[1].icon;
+          matches[sf2].teamA.players = [
+            ...topFourTeams[1].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+          matches[sf2].teamB.name = topFourTeams[2].teamName;
+          matches[sf2].teamB.icon = topFourTeams[2].icon;
+          matches[sf2].teamB.players = [
+            ...topFourTeams[2].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+          setMatches([...matches]);
+          localStorage.setItem("matches", JSON.stringify(matches));
+        }
+      } else if (matches?.[fIndex]?.teamB?.name === "TBQ") {
+        const unfinishedMatch = matches.filter(
+          (item) =>
+            (item.matchTypeId === "semiFinal1" ||
+              item.matchTypeId === "semiFinal2") &&
+            item.result === ""
+        );
+        if (unfinishedMatch.length === 0) {
+          const sf1WonTeam = matches[sf1].result.includes(
+            matches[sf1].teamA.name
+          )
+            ? "teamA"
+            : "teamB";
+          const sf2WonTeam = matches[sf2].result.includes(
+            matches[sf2].teamA.name
+          )
+            ? "teamA"
+            : "teamB";
+
+          matches[fIndex].teamA.name = matches[sf1][sf1WonTeam].name;
+          matches[fIndex].teamA.icon = matches[sf1][sf1WonTeam].icon;
+          matches[fIndex].teamA.players = [
+            ...matches[sf1][sf1WonTeam].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+
+          matches[fIndex].teamB.name = matches[sf2][sf2WonTeam].name;
+          matches[fIndex].teamB.icon = matches[sf2][sf2WonTeam].icon;
+          matches[fIndex].teamB.players = [
+            ...matches[sf2][sf2WonTeam].players.map((item) => {
+              return { ...item, balls: 0, runs: 0, wickets: 0 };
+            }),
+          ];
+
+          setMatches([...matches]);
+          localStorage.setItem("matches", JSON.stringify(matches));
+        }
+      }
+    }
+  }, [matches]);
 
   useEffect(() => {
     if (teamA.balls === 0 && teamB.balls === 0) {
@@ -238,7 +487,7 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
           "",
           "",
         ],
-        balls: 6,
+        balls: matchInfo.result !== "" ? matchInfo.teamA.balls : 6,
         currScore: 0,
         chance: true,
       });
@@ -259,7 +508,7 @@ function PlayMatch({ matchInfo, matches, setMatches, setCurrMatch }) {
           "",
           "",
         ],
-        balls: 6,
+        balls: matchInfo.result !== "" ? matchInfo.teamB.balls : 6,
         currScore: 0,
         chance: false,
       });
