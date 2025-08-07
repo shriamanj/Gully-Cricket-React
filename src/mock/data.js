@@ -1065,3 +1065,4 @@ export const iplTeams = [
     points: 0,
   },
 ];
+
